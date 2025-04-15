@@ -3,30 +3,34 @@ package main
 import (
 	"fmt"
 	"os"
-	"syscall"
 	"os/user"
+	"path/filepath"
 	"strconv"
+	"syscall"
 )
+
+var  Queue[]string
 
 func main(){
 	// args := os.Args
 	dir := "."
 	// ls(dir)
-	a(dir)
+	// a(dir)
 	// l(dir)
+	R(dir)
 }
 
-func ls(FileName string){
+func ls(path string){
 	colors := map[string]string{
 		"blue":    "\033[94m",
 		"reset":   "\033[0m",
 	}
-	fileInfo, err := os.Stat(FileName)
+	fileInfo, err := os.Stat(path)
 	if err != nil{
 		fmt.Println("error in the os.Stat function :", err)
 	}
 	if fileInfo.IsDir(){
-		content, err1 := os.ReadDir(FileName)
+		content, err1 := os.ReadDir(path)
 		if err1 != nil{
 			fmt.Println("error opening the folder")
 			return
@@ -34,15 +38,18 @@ func ls(FileName string){
 		for _, x := range content{
 				if x.Name()[0] == '.'{
 					continue
-				}else if x.IsDir(){
+				}
+				fullPath := filepath.Join(path, x.Name())
+				if x.IsDir(){
+					Queue = append(Queue, fullPath)
 					temp := colors["blue"] + x.Name() + colors["reset"]
-					fmt.Println(temp)
+					fmt.Print(temp, " ")
 				}else{
-					fmt.Println(x.Name())
+					fmt.Print(x.Name(), " ")
 				}
 		}
 	}else{
-		fmt.Println(fileInfo.Name())
+		fmt.Print(fileInfo.Name(), " ")
 	}
 }
 
@@ -104,4 +111,24 @@ func l(FileName string){
 	fmt.Print(time.Format("Jan 02 15:04"), " ") // January 2nd, 2006 at 3:04:05 PM (MST) — is Go’s reference time.
 	fmt.Println(FileInfo.Name())
 
+}
+
+func pop()string{
+	if len(Queue) == 0{
+		return ""
+	}
+	res := Queue[0]
+	Queue = Queue[1:]
+	return res
+}
+
+func R(FileName string) {
+	fmt.Println(FileName)
+	ls(FileName)
+	temp := pop()
+	if temp == "" {
+		return
+	}
+	fmt.Println(FileName)
+	R(temp)
 }
