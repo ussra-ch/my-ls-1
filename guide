@@ -1,0 +1,68 @@
+there are some linux function's that can help : opendir, readdir, printf, and closedir.
+ ls [flags] [directory] or  ls [directory]/[file] flag
+
+
+
+
+
+flags possibilities :
+     ls
+     ls folder
+     ls file
+     ls -flag
+     ls -flag folder
+     ls -flag file
+     ls -flags file file file .....
+NB : the flags can be from 0 to 5. So the total can be 0, 7 or mooooore because the user can give one or more files
+
+
+
+
+
+
+
+OS.STAT Return :
+
+{{ $f := os.Stat "README.md" }}
+{{ $f.IsDir }}    → false (bool)
+{{ $f.ModTime }}  → 2021-11-25 10:06:49.315429236 -0800 PST (time.Time)
+{{ $f.Name }}     → README.md (string)
+{{ $f.Size }}     → 241 (int64)
+
+{{ $d := os.Stat "content" }}
+{{ $d.IsDir }}    → true (bool)
+
+
+
+
+
+
+
+
+-l : Displays the mode, number of links, owner, group, size (in bytes), and time of last modification for each file. 
+    If the file is a special file, the size field contains the major and minor device numbers. If the time of last modification is greater than six months ago, the time field is shown in the format month date year where as files modified within six months the time field is shown as month date time format.
+    If the file is a symbolic link, the path name of the linked-to file is printed preceded by a ->. The attributes of the symbolic link are displayed. The -n, -g, and -o flag overrides the -l flag.
+
+    “Notes:
+    A symbolically linked file is followed by an arrow and the contents of the symbolic link.
+    The performance of the ls command when used with the -l option can be improved by executing the mkpasswd command. This is helpful when a directory contains files owned by different users, such as the /tmp directory.
+-R : Lists all subdirectories recursively.
+-a : Lists all entries in the directory, including the entries that begin with a . (dot).
+-r : Reverses the order of the sort, giving reverse alphabetic or the oldest first, as appropriate.
+-t : Sorts by time of last modification (latest first) instead of by name.
+
+
+
+A recursive function example :
+listAllFiles() {
+    local dir=$1
+    local file
+
+    for file in "$dir"/*; do
+        if <$file is a directory>; then
+            listAllFiles "$file"
+        else
+            <print $file>
+        fi
+    done
+}
