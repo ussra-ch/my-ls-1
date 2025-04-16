@@ -17,7 +17,8 @@ func main(){
 	// ls(dir)
 	// a(dir)
 	// l(dir)
-	R(dir)
+	// R(dir)
+	Bfs(dir)
 }
 
 func ls(path string){
@@ -94,7 +95,7 @@ func l(FileName string){
 		fmt.Println("syscall struct error, go check it")
 	}
 
-	fmt.Print(FileInfo.Mode(), " ")
+	fmt.Print(FileInfo.Mode(), "  ")
 	fmt.Print(test.Nlink, " ")
 	userName, err2 := user.LookupId(strconv.Itoa(int(test.Uid)))
 	if err2 != nil {
@@ -113,22 +114,77 @@ func l(FileName string){
 
 }
 
-func pop()string{
-	if len(Queue) == 0{
-		return ""
-	}
-	res := Queue[0]
-	Queue = Queue[1:]
-	return res
-}
+// func pop(queue []string)[]string{
+// 	if len(queue) == 0{
+// 		return []string{}
+// 	}
+// 	// res := queue[0]
+// 	queue = queue[1:]
+// 	return queue
+// }
 
-func R(FileName string) {
-	fmt.Println(FileName)
-	ls(FileName)
-	temp := pop()
-	if temp == "" {
+// func R(FileName string) {
+// 	fmt.Println(FileName)
+// 	ls(FileName)
+// 	temp := pop()
+// 	if temp == "" {
+// 		return
+// 	}
+// 	fmt.Println(FileName)
+// 	R(temp)
+// }
+
+func Bfs(DirName string){
+	queue := []string{}
+	currentPath := ""
+
+	FileInfos, err := os.Stat(DirName)
+	if err != nil{
+		fmt.Println("Error in Os.stat, Bfs function", err)
+	}
+
+	if FileInfos.IsDir(){
+		queue = append(queue, DirName)
+	}else{
+		fmt.Println(DirName)
 		return
 	}
-	fmt.Println(FileName)
-	R(temp)
+
+	for len(queue) > 0{
+		currentPath = queue[0]
+		queue = queue[1:]
+		FileInfos, ok := os.Stat(DirName)
+		if ok != nil{
+			fmt.Println(ok)
+		}
+		if !FileInfos.IsDir(){
+			fmt.Println(DirName)
+			return
+		}
+		subDir, err := os.ReadDir(currentPath)
+		if err != nil{
+			fmt.Println("Error in Bfs fucntion, Os.ReadDir", err)
+		}
+		fmt.Println(currentPath + " :")
+		fullPath := ""
+		for _, x := range subDir{
+			if currentPath[len(currentPath)-1] == '/'{
+				fullPath = currentPath + x.Name()
+			}else{
+				fullPath = currentPath + "/" + x.Name()
+			}
+			if x.Name()[0] == '.'{
+				continue
+			}
+			fmt.Print(x.Name(), " ")
+			
+			if x.IsDir(){
+				queue = append(queue, fullPath)
+			}
+		}
+		fmt.Println("")
+		fmt.Println("")
+	}
 }
+
+

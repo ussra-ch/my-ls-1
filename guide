@@ -66,3 +66,17 @@ listAllFiles() {
         fi
     done
 }
+
+
+
+In a proper BFS traversal:
+
+Initialization: Start with a queue containing the root directory.
+Processing:
+
+    Dequeue the first directory from the queue.
+    Read its contents.
+    For each subdirectory found, enqueue it.
+    For each file, process or record it as needed.
+
+Iteration: Repeat the process until the queue is empty.
