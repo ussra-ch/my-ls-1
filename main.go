@@ -6,19 +6,27 @@ import (
 	"os/user"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"syscall"
+	"time"
+	// "time"
 )
 
 var  Queue[]string
 
 func main(){
 	// args := os.Args
+	// Themap, files := argument_check(args)
+	// fmt.Println(args)
+	// fmt.Println(Themap)
+	// fmt.Println(files)
 	dir := "."
 	// ls(dir)
 	// a(dir)
 	// l(dir)
-	// R(dir)
-	Bfs(dir)
+	// Bfs(dir)
+	// r(dir)
+	t(dir)
 }
 
 func ls(path string){
@@ -114,26 +122,6 @@ func l(FileName string){
 
 }
 
-// func pop(queue []string)[]string{
-// 	if len(queue) == 0{
-// 		return []string{}
-// 	}
-// 	// res := queue[0]
-// 	queue = queue[1:]
-// 	return queue
-// }
-
-// func R(FileName string) {
-// 	fmt.Println(FileName)
-// 	ls(FileName)
-// 	temp := pop()
-// 	if temp == "" {
-// 		return
-// 	}
-// 	fmt.Println(FileName)
-// 	R(temp)
-// }
-
 func Bfs(DirName string){
 	queue := []string{}
 	currentPath := ""
@@ -187,4 +175,156 @@ func Bfs(DirName string){
 	}
 }
 
+func argument_check(args []string)(map[string]bool, []string){
+	TheMap := map[string]bool{}
+	files := []string{}
 
+	TheMap["ls"] = false
+	TheMap["R"] = false
+	TheMap["r"] = false
+	TheMap["l"] = false
+	TheMap["a"] = false
+	TheMap["t"] = false
+	TheMap["all"] = false
+	TheMap["reverse"] = false
+	TheMap["time"] = false
+	TheMap["recursive"] = false
+
+	if args[1] != "ls"{
+		fmt.Println("Please enter the ls command")
+		return map[string]bool{}, []string{}
+	}else{
+		TheMap["ls"] = true
+	}
+
+	if len(args) == 2{
+		TheMap["ls"] = true
+		files = append(files, ".")
+		return TheMap, files
+	}
+
+	for i, x := range args{
+		if x[0] == '-' && x[1] == '-'{
+			TheMap[string(x[2:])] = true
+		}else if x[0] == '-'{
+			if len(x) > 2{
+				temp := strings.Split(x, "")
+				for _, y := range temp{
+					TheMap[y]=true
+				}
+			}else{
+				TheMap[string(x[1])] = true
+			}
+		}else if x != "ls" && i != 0{
+			files = append(files, x)
+		}
+	}
+	if len(files) == 0{
+		files = append(files, ".")
+	}
+	return TheMap, files
+}
+
+func r(path string){
+	colors := map[string]string{
+		"blue":    "\033[94m",
+		"reset":   "\033[0m",
+	}
+	res := []string{}
+	fileInfo, err := os.Stat(path)
+	if err != nil{
+		fmt.Println("error in the os.Stat function :", err)
+	}
+	if fileInfo.IsDir(){
+		content, err1 := os.ReadDir(path)
+		if err1 != nil{
+			fmt.Println("error opening the folder")
+			return
+		}
+		for _, x := range content{
+				if x.Name()[0] == '.'{
+					continue
+				}
+				fullPath := filepath.Join(path, x.Name())
+				if x.IsDir(){
+					Queue = append(Queue, fullPath)
+					temp := colors["blue"] + x.Name() + colors["reset"]
+					// fmt.Print(temp, " ")
+					res = append(res, temp)
+				}else{
+					// fmt.Print(x.Name(), " ")
+					res = append(res, x.Name())
+				}
+		}
+	}else{
+		// fmt.Print(fileInfo.Name(), " ")
+		res = append(res, fileInfo.Name())
+	}
+
+	for i := len(res)-1; i >= 0; i--{
+		fmt.Print(res[i], " ")
+	}
+}
+
+func t(path string){
+	// res := []string{}
+	type temp struct{
+		name string
+		timeStamp any
+	}
+	result := []temp{}
+	fileInfo, err := os.Stat(path)
+	if err != nil{
+		fmt.Println("error in the os.Stat function :", err)
+	}
+	if fileInfo.IsDir(){
+		content, err1 := os.ReadDir(path)
+		if err1 != nil{
+			fmt.Println("error opening the folder")
+			return
+		}
+		for _, x := range content{
+			//ّ i want to work on all files then ignore the ones that starts with a dot
+				fullPath := filepath.Join(path, x.Name())
+				provi := temp{}
+				FileInfos, err := os.Stat(fullPath)
+				if err != nil{
+					fmt.Println("Error in t function, inside the loop. Go check it :) ")
+				}
+				Queue = append(Queue, fullPath)
+				// fmt.Print(temp, " ")
+				provi.name = x.Name()
+				provi.timeStamp = FileInfos.ModTime()
+				result = append(result, provi)
+		}
+	}else{
+		// fmt.Print(fileInfo.Name(), " ")
+		provi := temp{}
+		provi.name = fileInfo.Name()
+		provi.timeStamp = fileInfo.ModTime()
+		// res = append(res, fileInfo.Name())
+		result = append(result, provi)
+	}
+	for _, x := range result{
+		// fmt.Println(x.timeStamp.(time.Time).Unix())
+		x.timeStamp = x.timeStamp.(time.Time).Unix()
+		fmt.Println(x.timeStamp)
+	}
+	fmt.Println(result)
+	// fmt.Println(time.Now())
+	// fmt.Println(result)
+	// for i := 0; i < len(result)-1; i++{
+	// 	if result[i].timeStamp < result[i+1].timeStamp{
+	// 		swap := result[i]
+	// 		result[i] = result[i+1]
+	// 		result[i+1] = swap
+	// 		i = -1
+	// 	}
+	// }
+
+	// for _, x := range result {
+	// 	fmt.Println(x.name, " ")
+	// 	fmt.Printf("%T", x.timeStamp.(time.Time).Unix())
+	// } 
+
+}
