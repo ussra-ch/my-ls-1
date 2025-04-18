@@ -37,7 +37,6 @@ func (t *temp) ConvertToUnix() int64 {
 }
 
 func t(path string) {
-	// res := []string{}
 
 	result := []temp{}
 	fileInfo, err := os.Stat(path)
@@ -59,40 +58,31 @@ func t(path string) {
 				fmt.Println("Error in t function, inside the loop. Go check it :) ")
 			}
 			M.Queue = append(M.Queue, fullPath)
-			// fmt.Print(temp, " ")
 			provi.name = x.Name()
 			provi.timeStamp = FileInfos.ModTime()
 			result = append(result, provi)
 		}
 	} else {
-		// fmt.Print(fileInfo.Name(), " ")
 		provi := temp{}
 		provi.name = fileInfo.Name()
 		provi.timeStamp = fileInfo.ModTime()
-		// res = append(res, fileInfo.Name())
 		result = append(result, provi)
 	}
 
 	new_res := []temp{}
 
 	for _, x := range result {
-		// fmt.Println(x.timeStamp.(time.Time).Unix()
 		new_res = append(new_res, temp{x.name, x.ConvertToUnix()})
-		fmt.Println(new_res)
-
 	}
 
-	fmt.Println("new_res", new_res)
-	// fmt.Println(time.Now())
-	// fmt.Println(result)
-	// for i := 0; i < len(result)-1; i++{
-	// 	if result[i].timeStamp < result[i+1].timeStamp{
-	// 		swap := result[i]
-	// 		result[i] = result[i+1]
-	// 		result[i+1] = swap
-	// 		i = -1
-	// 	}
-	// }
+	for i := 0; i < len(new_res)-1; i++{
+		if new_res[i].timeStamp.(int64) < new_res[i+1].timeStamp.(int64){
+			swap := new_res[i]
+			new_res[i] = new_res[i+1]
+			new_res[i+1] = swap
+			i = -1
+		}
+	}
 
 	for _, x := range new_res {
 		fmt.Println(x.String())
