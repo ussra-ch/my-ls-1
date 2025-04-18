@@ -5,7 +5,8 @@ import (
 	"os"
 )
 
-func A(FileName string) {
+func A(FileName string) []string {
+	result := []string{}
 	colors := map[string]string{
 		"blue":  "\033[94m",
 		"reset": "\033[0m",
@@ -20,17 +21,22 @@ func A(FileName string) {
 		content, err1 := os.ReadDir(FileName)
 		if err1 != nil {
 			fmt.Println("error opening the folder")
-			return
+			return nil
 		}
 		for _, x := range content {
 			if x.IsDir() {
 				temp := colors["blue"] + x.Name() + colors["reset"]
-				fmt.Println(temp)
+				// fmt.Println(temp)
+				result = append(result, temp)
+				
 			} else {
-				fmt.Println(x.Name())
+				result = append(result, x.Name())
+				// fmt.Println(x.Name())
 			}
 		}
 	} else {
-		fmt.Println(fileInfo.Name())
+		// fmt.Println(fileInfo.Name())
+		result = append(result, fileInfo.Name())
 	}
+	return result
 }

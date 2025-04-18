@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-func L(FileName string) {
+func L(FileName string)  {
 	FileInfo, err := os.Stat(FileName)
 	if err != nil {
 		fmt.Println("Error in the 'l' function, Os.stat")
