@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-	M "myls1/math"
+	M "myls1/functions"
 )
 
 func main() {
