@@ -16,8 +16,10 @@ func A(FileName string) []string {
 		fmt.Println("error in the os.Stat function :", err)
 	}
 	if fileInfo.IsDir() {
-		fmt.Println(colors["blue"] + "." + colors["reset"])
-		fmt.Println(colors["blue"] + ".." + colors["reset"])
+		// fmt.Println(colors["blue"] + "." + colors["reset"])
+		// fmt.Println(colors["blue"] + ".." + colors["reset"])
+		result = append(result, ".")
+		result = append(result, "..")
 		content, err1 := os.ReadDir(FileName)
 		if err1 != nil {
 			fmt.Println("error opening the folder")

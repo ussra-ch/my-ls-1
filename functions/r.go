@@ -7,20 +7,26 @@ import (
 )
 
 // BFS algorithm
-func R(DirName string) {
+func R(DirName string) [][]string{
 	queue := []string{}
 	currentPath := ""
+	result := make([][]string, 1)
 
 	FileInfos, err := os.Stat(DirName)
 	if err != nil {
 		fmt.Println("Error in Os.stat, Bfs function", err)
 	}
+	
 
 	if FileInfos.IsDir() {
 		queue = append(queue, DirName)
+		temp := []string{DirName}
+		result = append(result, temp)
 	} else {
-		fmt.Println(DirName)
-		return
+		temp := []string{DirName}
+		result = append(result, temp)
+		// fmt.Println(DirName)
+		return result
 	}
 
 	for len(queue) > 0 {
@@ -31,14 +37,18 @@ func R(DirName string) {
 			fmt.Println(ok)
 		}
 		if !FileInfos.IsDir() {
-			fmt.Println(DirName)
-			return
+			// fmt.Println(DirName)
+			temp := []string{DirName}
+			result = append(result, temp)
+			return result
 		}
 		subDir, err := os.ReadDir(currentPath)
 		if err != nil {
 			fmt.Println("Error in Bfs fucntion, Os.ReadDir", err)
 		}
-		fmt.Println(currentPath + " :")
+		// fmt.Println(currentPath + " :")
+		temp := []string{currentPath}
+		// result = append(result, temp)
 		fullPath := ""
 		for _, x := range subDir {
 			if currentPath[len(currentPath)-1] == '/' {
@@ -49,15 +59,19 @@ func R(DirName string) {
 			if x.Name()[0] == '.' {
 				continue
 			}
-			fmt.Print(x.Name(), " ")
+			// fmt.Print(x.Name(), " ")
+			// temp := []string{}
+			temp = append(temp, x.Name())
 
 			if x.IsDir() {
 				queue = append(queue, fullPath)
 			}
 		}
-		fmt.Println("")
-		fmt.Println("")
+		result = append(result, temp)
+		// fmt.Println("")
+		// fmt.Println("")
 	}
+	return result
 }
 
 // Old implementation of the r flag

@@ -21,7 +21,7 @@ func (t *Temp) ConvertToUnix() int64 {
 	return t.TimeStamp.(time.Time).Unix()
 }
 
-func T(path string)   []Temp {
+func T(path string)[]Temp {
 	// res := []string{}
 
 	result := []Temp{}
@@ -63,8 +63,7 @@ func T(path string)   []Temp {
 	for _, x := range result {
 		// fmt.Println(x.timeStamp.(time.Time).Unix()
 		newResult = append(newResult, Temp{x.NameTemp, x.ConvertToUnix()})
-		fmt.Println(newResult)
-
+		// fmt.Println(newResult)
 	}
 
 	for i := 0; i < len(newResult)-1; i++ {
