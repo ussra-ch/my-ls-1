@@ -8,6 +8,7 @@ import (
 	"syscall"
 )
 
+//katprinti hta l files with a dot 
 func L(FileName string)  {
 	FileInfo, err := os.Stat(FileName)
 	if err != nil {

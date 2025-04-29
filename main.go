@@ -4,85 +4,118 @@ import (
 	"fmt"
 	functions "myls1/functions"
 	"os"
+	"strings"
 )
-
+// mzl lina dik total li katkoun m3a ls -l
 func main() {
 	args := os.Args
-	Themap, files := functions.ArgumentChecking(args)
-	// fmt.Println(Themap)
-	// fmt.Println(files)
+	TheMap, files := functions.ArgumentChecking(args)
+	// RecursionResult := [][]string{}
+	// ReverseResult := []string{}
+	// TimeResult := []string{}
 
-	if Themap["recursive"]{
-		Themap["R"] = true
-	}
-	if Themap["time"]{
-		Themap["t"] = true
-	}
-	if Themap["all"]{
-		Themap["ls"] = true
-		Themap["l"] = true
-		Themap["R"] = true
-		Themap["r"] = true
-		Themap["a"] = true
-		Themap["t"] = true
-	}
-	if Themap["reverse"]{
-		Themap["r"] = true
-	}
-
-	if Themap["a"]{
-		for _, y := range files{
-			result := functions.A(y)
-			for _, x := range result{
-				fmt.Print(x, " ")
-			}
-			fmt.Println("")
-		}
-	}
-	// if Themap["ls"]{
-	// 	for _, y := range files{
-	// 		result := functions.LS(y)
-	// 		for _, x := range result{
-	// 			fmt.Print(x, "  ")
-	// 		}
-	// 		fmt.Println("")
-	// 	}
-	// }
-	if Themap["t"]{
-		for _, y := range files{
-			result := functions.T(y) //mzl kayn hna mouchkil dual . w .., khas htahuma ytratbo bhal l folders/files lakhrin
-			for _, x := range result{
-				fmt.Print(x.NameTemp, "  ")
-			}
-			fmt.Println("")
-		}
-	}
-
-	if Themap["R"]{
-		for _, y := range files{
-			result := functions.R(y) //makadirch ls 3ad tdkhlul lakhrin. katdkhul nichan l subdir
-			for z, x := range result{
-				if z == 0 || z == 1{
-					continue
-				}else{
-					for i, t := range x{
-						if len(t) == 0{
-							continue
-						}
-						if i == 0{
-							fmt.Println(t + ":")
-							// fmt.Println("")
-						}else{
-							fmt.Print(t, "    ")
-						}
-						// fmt.Print(t, " ")
-					}
-					fmt.Println("\n")
+	for _, x := range files{
+		result := ls(x, TheMap)
+		if TheMap["R"]{
+			for _, y := range result{
+				full := x + "/" + y 
+				info, err := os.Stat(full)
+				if err != nil {
+					fmt.Println("error in the main")
 				}
+				if info.IsDir() {
+					Recursion(full, TheMap)         // recurse with full path
 				}
-			// fmt.Println(result)
+			}
 		}
 	}
-
 }
 
+
+func ls(FileName string, TheMap map[string]bool) []string{
+	result := []string{}
+	fileInfos, err := os.Stat(FileName)
+	if err != nil {
+		fmt.Println("error in the os.Stat function :", err)
+	}
+
+	if fileInfos.IsDir(){
+		if TheMap["ls"]{
+			result = functions.LS(FileName)
+		}
+		if TheMap["t"]{
+			us := []string{}
+			temp := functions.T(FileName, []string{})
+			for _, x := range temp{
+				us = append(us, CleanPath(x.NameTemp))
+			}
+			result = us
+		}
+		if TheMap["r"]{
+			us := []string{}
+			us = functions.Reverse("", result)
+			result = us
+		}
+		if TheMap["l"]{
+			for _, x := range result{
+				functions.L(x) //it always returns the files that start with a dot even if the a flag is false
+			}
+		}
+	}
+	if !TheMap["l"]{
+		for _, x := range result{
+			if !TheMap["a"] && x[0] == '.'{
+				continue
+			}else{
+				fmt.Print(x, "    ")
+			}
+		}
+	}
+	return result
+}
+
+//it still does not work with .. directory
+func Recursion(FileName string, TheMap map[string]bool){
+	FileInfos, err := os.Stat(FileName)
+	if err != nil{
+		fmt.Println("here here")
+		return
+	}
+	if !FileInfos.IsDir(){
+		return
+	}else{
+		fmt.Println("")
+		fmt.Println(FileName, " : ")
+		rec := ls(FileName, TheMap)
+		for _, x := range rec{
+			full := FileName + "/" + x
+			Infos, err := os.Stat(full)
+			if err != nil{
+				fmt.Println("here is the error")
+				return
+			}
+			if Infos.IsDir(){
+				Recursion(full, TheMap)
+			}
+		}
+	}
+}
+
+func CleanPath(fullPath string)string{
+	result := ""
+	temp := strings.Split(fullPath, "/")
+
+	for i := len(temp)-1; i >= 0; i--{
+		// fmt.Println(temp[i])
+		if len(temp[i]) > 0 && temp[i] != " "{
+			// fmt.Println("111")
+			result += temp[i]
+			return result
+		}
+	}
+	if len(result) == 0{
+		result += "/"
+	}
+
+	return result
+}

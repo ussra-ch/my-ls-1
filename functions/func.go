@@ -54,6 +54,23 @@ func ArgumentChecking(args []string) (map[string]bool, []string) {
 		} else if x != "ls" && i != 0 {
 			files = append(files, x)
 		}
+		if x == "--recursive"{
+			TheMap["R"] = true
+		}
+		if x == "--time"{
+			TheMap["t"] = true
+		}
+		if x == "--reverse"{
+			TheMap["r"] = true
+		}
+		if x == "--all"{
+			TheMap["l"] = true
+			TheMap["R"] = true
+			TheMap["r"] = true
+			TheMap["a"] = true
+			TheMap["t"] = true
+		}
+		// fmt.Println(x)
 	}
 	if len(files) == 0 {
 		files = append(files, ".")

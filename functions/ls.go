@@ -12,10 +12,6 @@ import (
 // done returning slice
 func LS(path string)  []string{
 	result := []string{}
-	colors := map[string]string{
-		"blue":  "\033[94m",
-		"reset": "\033[0m",
-	}
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		fmt.Println("error in the os.Stat function :", err)
@@ -34,14 +30,8 @@ func LS(path string)  []string{
 			fullPath := filepath.Join(path, x.Name())
 			if x.IsDir() {
 				Queue = append(Queue, fullPath)
-				temp := colors["blue"] + x.Name() + colors["reset"]
-				// fmt.Print(temp, "  ")
-				result = append(result,  temp)
+				result = append(result,  x.Name())
 			} else {	
-				// _, err:= fmt.Print(x.Name(), "  ")
-				// if err!= nil {
-				// 	return nil
-				// }
 				result = append(result, x.Name())
 			}
 		}
