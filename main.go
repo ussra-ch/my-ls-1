@@ -4,7 +4,7 @@ import (
 	"fmt"
 	functions "myls1/functions"
 	"os"
-	"strings"
+	// "strings"
 )
 // mzl lina dik total li katkoun m3a ls -l
 func main() {
@@ -47,7 +47,7 @@ func ls(FileName string, TheMap map[string]bool) []string{
 			us := []string{}
 			temp := functions.T(FileName, []string{})
 			for _, x := range temp{
-				us = append(us, CleanPath(x.NameTemp))
+				us = append(us, x.NameTemp)
 			}
 			result = us
 		}
@@ -89,34 +89,16 @@ func Recursion(FileName string, TheMap map[string]bool){
 		fmt.Println(FileName, " : ")
 		rec := ls(FileName, TheMap)
 		for _, x := range rec{
-			full := FileName + "/" + x
-			Infos, err := os.Stat(full)
+			// full := FileName + "/" + x
+			Infos, err := os.Stat(x)
 			if err != nil{
-				fmt.Println("here is the error")
+				fmt.Println("here is the error : ", err)
 				return
 			}
 			if Infos.IsDir(){
-				Recursion(full, TheMap)
+				Recursion(x, TheMap)
 			}
 		}
 	}
 }
 
-func CleanPath(fullPath string)string{
-	result := ""
-	temp := strings.Split(fullPath, "/")
-
-	for i := len(temp)-1; i >= 0; i--{
-		// fmt.Println(temp[i])
-		if len(temp[i]) > 0 && temp[i] != " "{
-			// fmt.Println("111")
-			result += temp[i]
-			return result
-		}
-	}
-	if len(result) == 0{
-		result += "/"
-	}
-
-	return result
-}

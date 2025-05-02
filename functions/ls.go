@@ -26,13 +26,13 @@ func LS(path string)  []string{
 			if x.Name()[0] == '.' {
 				continue
 			}
-			// this to be changed after 
+			// this to be changed after ///////////////////////////////////////////////
 			fullPath := filepath.Join(path, x.Name())
 			if x.IsDir() {
 				Queue = append(Queue, fullPath)
-				result = append(result,  x.Name())
+				result = append(result,  fullPath)
 			} else {	
-				result = append(result, x.Name())
+				result = append(result, fullPath)
 			}
 		}
 	} else {

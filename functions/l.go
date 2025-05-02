@@ -6,13 +6,14 @@ import (
 	"os/user"
 	"strconv"
 	"syscall"
+	"strings"
 )
 
-//katprinti hta l files with a dot 
+//katprinti hta l files with a dot
 func L(FileName string)  {
 	FileInfo, err := os.Stat(FileName)
 	if err != nil {
-		fmt.Println("Error in the 'l' function, Os.stat")
+		fmt.Println("Error in the 'l' function, Os.stat", err)
 	}
 	test, err1 := FileInfo.Sys().(*syscall.Stat_t) // err1 here is a bool
 	if !err1 {
@@ -35,6 +36,27 @@ func L(FileName string)  {
 		fmt.Print(test.Size, " ")
 		time := FileInfo.ModTime()
 		fmt.Print(time.Format("Jan 02 15:04"), " ") // January 2nd, 2006 at 3:04:05 PM (MST) — is Go’s reference time.
-		fmt.Println(FileInfo.Name())
+		fmt.Println(CleanPath(FileInfo.Name()))
 	// }
+}
+
+
+
+func CleanPath(fullPath string)string{
+	result := ""
+	temp := strings.Split(fullPath, "/")
+
+	for i := len(temp)-1; i >= 0; i--{
+		// fmt.Println(temp[i])
+		if len(temp[i]) > 0 && temp[i] != " "{
+			// fmt.Println("111")
+			result += temp[i]
+			return result
+		}
+	}
+	if len(result) == 0{
+		result += "/"
+	}
+
+	return result
 }
