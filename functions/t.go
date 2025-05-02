@@ -21,7 +21,7 @@ func (t *Temp) ConvertToUnix() int64 {
 	return t.TimeStamp.(time.Time).Unix()
 }
 
-func T(path string, input[]string)[]Temp {
+func T(path string, input[]string, TheMap map[string]bool)[]Temp {
 	// res := []string{}
 	// fmt.Println(input)
 	result := []Temp{}
@@ -37,10 +37,11 @@ func T(path string, input[]string)[]Temp {
 				fmt.Println("error opening the folder")
 				return nil 
 			}
+			provi := Temp{}
 			for _, x := range content {
 				//ّ i want to work on all files then ignore the ones that starts with a dot
 				fullPath := filepath.Join(path, x.Name()) // it's forbidden to use this function
-				provi := Temp{}
+				provi = Temp{}
 				FileInfos, err := os.Stat(fullPath)
 				if err != nil {
 					fmt.Println("Error in t function, inside the loop. Go check it :) ")
@@ -72,8 +73,22 @@ func T(path string, input[]string)[]Temp {
 			result = append(result, provi)
 		}
 	}
+	provi := Temp{}
+	FileInfos, err := os.Stat(".")
+	if err != nil {
+		fmt.Println("Error in t function. Go check it :) ")
+	}
+	provi.NameTemp = "."
+	provi.TimeStamp = FileInfos.ModTime()
+	result = append(result, provi)
 
-
+	FileInfos, err = os.Stat("..")
+	if err != nil {
+		fmt.Println("Error in t function. Go check it :) ")
+	}
+	provi.NameTemp = ".."
+	provi.TimeStamp = FileInfos.ModTime()
+	result = append(result, provi)
 
 	newResult := []Temp{}
 

@@ -47,7 +47,7 @@ func ls(FileName string, TheMap map[string]bool) []string{
 		if TheMap["t"]{
 			// fmt.Println(result)
 			us := []string{}
-			temp := functions.T(FileName, []string{})
+			temp := functions.T(FileName, []string{}, TheMap)
 			for _, x := range temp{
 				// fmt.Println(x)
 				us = append(us, x.NameTemp)
