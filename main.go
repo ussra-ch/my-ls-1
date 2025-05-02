@@ -18,13 +18,14 @@ func main() {
 		result := ls(x, TheMap)
 		if TheMap["R"]{
 			for _, y := range result{
-				full := x + "/" + y 
-				info, err := os.Stat(full)
+				// full := x + "/" + y 
+				// fmt.Println(y)
+				info, err := os.Stat(y)
 				if err != nil {
 					fmt.Println("error in the main")
 				}
 				if info.IsDir() {
-					Recursion(full, TheMap)         // recurse with full path
+					Recursion(y, TheMap)         // recurse with full path
 				}
 			}
 		}
@@ -50,11 +51,14 @@ func ls(FileName string, TheMap map[string]bool) []string{
 				us = append(us, x.NameTemp)
 			}
 			result = us
+			// fmt.Println(result)
 		}
 		if TheMap["r"]{
 			us := []string{}
+			// fmt.Println(result)
 			us = functions.Reverse("", result)
 			result = us
+			// fmt.Println(result)
 		}
 		if TheMap["l"]{
 			for _, x := range result{
@@ -67,7 +71,7 @@ func ls(FileName string, TheMap map[string]bool) []string{
 			if !TheMap["a"] && x[0] == '.'{
 				continue
 			}else{
-				fmt.Print(x, "    ")
+				fmt.Print(functions.CleanPath(x), "    ")
 			}
 		}
 		fmt.Println("")
@@ -92,7 +96,7 @@ func Recursion(FileName string, TheMap map[string]bool){
 			// full := FileName + "/" + x
 			Infos, err := os.Stat(x)
 			if err != nil{
-				fmt.Println("here is the error : ", err)
+				fmt.Println("here is the error : ", err, FileName)
 				return
 			}
 			if Infos.IsDir(){

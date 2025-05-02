@@ -8,10 +8,10 @@ import (
 
 // Old implementation of the r flag
 func Reverse(path string, input []string) []string{
-	colors := map[string]string{
-		"blue":  "\033[94m",
-		"reset": "\033[0m",
-	}
+	// colors := map[string]string{
+	// 	"blue":  "\033[94m",
+	// 	"reset": "\033[0m",
+	// }
 	res := []string{}
 	final := []string{}
 	if path != ""{
@@ -34,17 +34,17 @@ func Reverse(path string, input []string) []string{
 				fullPath := filepath.Join(path, x.Name())
 				if x.IsDir() {
 					Queue = append(Queue, fullPath)
-					temp := colors["blue"] + x.Name() + colors["reset"]
+					// temp := colors["blue"] + x.Name() + colors["reset"]
 					// fmt.Print(temp, " ")
-					res = append(res, temp)
+					res = append(res, fullPath)
 				} else {
 					// fmt.Print(x.Name(), " ")
-					res = append(res, x.Name())
+					res = append(res, fullPath)
 				}
 			}
 		} else {
 			// fmt.Print(fileInfo.Name(), " ")
-			res = append(res, fileInfo.Name())
+			res = append(res, path)
 		}
 	}else{
 		res = input

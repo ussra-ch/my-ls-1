@@ -8,7 +8,6 @@ import (
 
 
 
-
 // done returning slice
 func LS(path string)  []string{
 	result := []string{}
@@ -30,10 +29,8 @@ func LS(path string)  []string{
 			fullPath := filepath.Join(path, x.Name())
 			if x.IsDir() {
 				Queue = append(Queue, fullPath)
-				result = append(result,  fullPath)
-			} else {	
-				result = append(result, fullPath)
 			}
+			result = append(result, fullPath)
 		}
 	} else {
 		// fmt.Print(fileInfo.Name(), "  ")

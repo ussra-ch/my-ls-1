@@ -46,14 +46,14 @@ func T(path string, input[]string)[]Temp {
 				}
 				Queue = append(Queue, fullPath)
 				// fmt.Print(temp, " ")
-				provi.NameTemp = x.Name()
+				provi.NameTemp = fullPath
 				provi.TimeStamp = FileInfos.ModTime()
 				result = append(result, provi)
 			}
 		} else {
 			// fmt.Print(fileInfo.Name(), " ")
 			provi := Temp{}
-			provi.NameTemp = fileInfo.Name()
+			provi.NameTemp = path
 			provi.TimeStamp = fileInfo.ModTime()
 			// res = append(res, fileInfo.Name())
 			result = append(result, provi)
@@ -71,6 +71,8 @@ func T(path string, input[]string)[]Temp {
 			result = append(result, provi)
 		}
 	}
+
+
 
 	newResult := []Temp{}
 
