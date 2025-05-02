@@ -81,6 +81,8 @@ func T(path string, input[]string, TheMap map[string]bool)[]Temp {
 	provi.NameTemp = "."
 	provi.TimeStamp = FileInfos.ModTime()
 	result = append(result, provi)
+	fmt.Println(provi.TimeStamp)
+
 
 	FileInfos, err = os.Stat("..")
 	if err != nil {
@@ -89,6 +91,7 @@ func T(path string, input[]string, TheMap map[string]bool)[]Temp {
 	provi.NameTemp = ".."
 	provi.TimeStamp = FileInfos.ModTime()
 	result = append(result, provi)
+	fmt.Println(provi.TimeStamp)
 
 	newResult := []Temp{}
 

@@ -86,6 +86,9 @@ func ls(FileName string, TheMap map[string]bool) []string{
 
 //it still does not work with .. directory
 func Recursion(FileName string, TheMap map[string]bool){
+	if FileName == "." || FileName == ".."{
+		return
+	}
 	FileInfos, err := os.Stat(FileName)
 	if err != nil{
 		fmt.Println("here here")
