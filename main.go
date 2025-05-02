@@ -70,6 +70,7 @@ func ls(FileName string, TheMap map[string]bool) []string{
 				fmt.Print(x, "    ")
 			}
 		}
+		fmt.Println("")
 	}
 	return result
 }
