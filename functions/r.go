@@ -7,7 +7,7 @@ import (
 )
 
 // Old implementation of the r flag
-func Reverse(path string, input []string) []string{
+func Reverse(path string, input []string, TheMap map[string]bool) []string{
 	// colors := map[string]string{
 	// 	"blue":  "\033[94m",
 	// 	"reset": "\033[0m",
@@ -27,7 +27,7 @@ func Reverse(path string, input []string) []string{
 				return []string{}
 			}
 			for _, x := range content {
-				if x.Name()[0] == '.' {
+				if x.Name()[0] == '.' && !TheMap["a"]{
 					continue
 				}
 				// to be changed after 

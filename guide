@@ -80,3 +80,9 @@ Processing:
     For each file, process or record it as needed.
 
 Iteration: Repeat the process until the queue is empty.
+
+
+
+
+Things we should handle:
+- Total sum in ls and -l

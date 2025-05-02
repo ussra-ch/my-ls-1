@@ -23,13 +23,14 @@ func (t *Temp) ConvertToUnix() int64 {
 
 func T(path string, input[]string)[]Temp {
 	// res := []string{}
-
+	// fmt.Println(input)
 	result := []Temp{}
 	if path != ""{
 		fileInfo, err := os.Stat(path)
 		if err != nil {
 			fmt.Println("error in the os.Stat function :", err)
 		}
+		// fmt.Println(path)
 		if fileInfo.IsDir() {
 			content, err1 := os.ReadDir(path)
 			if err1 != nil {

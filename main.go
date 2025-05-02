@@ -42,25 +42,30 @@ func ls(FileName string, TheMap map[string]bool) []string{
 
 	if fileInfos.IsDir(){
 		if TheMap["ls"]{
-			result = functions.LS(FileName)
+			result = functions.LS(FileName, TheMap)
 		}
 		if TheMap["t"]{
+			// fmt.Println(result)
 			us := []string{}
 			temp := functions.T(FileName, []string{})
 			for _, x := range temp{
+				// fmt.Println(x)
 				us = append(us, x.NameTemp)
 			}
 			result = us
+			// fmt.Println(result)
 			// fmt.Println(result)
 		}
 		if TheMap["r"]{
 			us := []string{}
 			// fmt.Println(result)
-			us = functions.Reverse("", result)
+			us = functions.Reverse("", result, TheMap)
 			result = us
+			
 			// fmt.Println(result)
 		}
 		if TheMap["l"]{
+			
 			for _, x := range result{
 				functions.L(x) //it always returns the files that start with a dot even if the a flag is false
 			}
