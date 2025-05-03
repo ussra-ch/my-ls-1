@@ -11,7 +11,8 @@ import (
 // done returning slice
 func LS(path string, TheMap map[string]bool)  []string{
 	result := []string{}
-	result = append(result, ".", "..")
+
+	result = append(result, path, GetRoot(path))
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		fmt.Println("error in the os.Stat function :", err)
