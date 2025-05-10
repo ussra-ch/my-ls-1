@@ -14,14 +14,14 @@ import (
 func L(FileName string, TheMap map[string]bool, root string) {
 	// fmt.Println(FileName)
 
-	s := strings.Split(FileName, "/")
-	// fmt.Println(len(s))
-	temp := []string{}
-	for i := 0; i < len(s); i++ {
-		if s[i] != "" {
-			temp = append(temp, s[i])
-		}
-	}
+	// s := strings.Split(FileName, "/")
+	// // fmt.Println(len(s))
+	// temp := []string{}
+	// for i := 0; i < len(s); i++ {
+	// 	if s[i] != "" {
+	// 		temp = append(temp, s[i])
+	// 	}
+	// }
 	// fmt.Println(len(temp))
 	/*if len(s) == 1 || s[0] == "" {
 		FileName = "./" + FileName
@@ -35,11 +35,13 @@ func L(FileName string, TheMap map[string]bool, root string) {
 	// }
 	
 	FileInfo, err := os.Stat(FileName)
+	// fmt.Println(FileInfo.Name())
 	
 	// fmt.Println("File infos:", FileInfo.Name())
 	if err != nil {
-		fmt.Println(FileName)
-		fmt.Println("Error in the 'l' function, Os.stat", err)
+		//fmt.Println(FileName)
+		//fmt.Println("Error in the 'l' function, Os.stat", err)
+		return
 	}
 	if FileName=="" {
 		return
@@ -98,15 +100,11 @@ func L(FileName string, TheMap map[string]bool, root string) {
 	// }
 
 	// fmt.Println("Leeeenght is :", len(s))
-	fmt.Println("file name is :", FileName)
+	// fmt.Println( FileName)
 	// fmt.Println("slice content is :", s)
-	if s[len(s)-1] == FileName {
-		fmt.Println("..")
-	} else if s[0] == "." {
-		fmt.Println(".")
-	} else {
-		fmt.Println(FileInfo.Name())
-	}
+	// e
+	fmt.Println(FileInfo.Name())
+
 	// if FileInfo.Name()==temp[1]{
 	// 	fmt.Println(".")
 	// }else{

@@ -11,8 +11,7 @@ import (
 // done returning slice
 func LS(path string, TheMap map[string]bool)  []string{
 	result := []string{}
-
-	result = append(result, path, GetRoot(path))
+	// result = append(result, path, GetRoot(path))
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		fmt.Println("error in the os.Stat function :", err)
@@ -22,6 +21,9 @@ func LS(path string, TheMap map[string]bool)  []string{
 		if err1 != nil {
 			fmt.Println("error opening the folder") 
 			return nil
+		}
+		if TheMap["a"]{
+			result = append(result, ".", "..")
 		}
 		for _, x := range content {
 			if x.Name()[0] == '.' && !TheMap["a"]{
