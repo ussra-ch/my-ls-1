@@ -11,6 +11,8 @@ import (
 	// "strings"
 )
 
+var isrot bool
+
 // mzl lina dik total li katkoun m3a ls -l
 func main() {
 	args := os.Args
@@ -20,24 +22,25 @@ func main() {
 	// TimeResult := []string{}
 
 	for _, x := range files {
-		result := ls(x, TheMap)
+
+		result := ls(x, TheMap, isrot)
 		if TheMap["R"] {
 			for _, y := range result {
+
 				// full := x + "/" + y
 
 				info, err := os.Stat(y)
 				if err != nil {
-					fmt.Println("error in the main")
 				}
 				if y != "" && info.IsDir() {
-					Recursion(y, TheMap) // recurse with full path
+					Recursion(y, TheMap, isrot) // recurse with full path
 				}
 			}
 		}
 	}
 }
 
-func ls(FileName string, TheMap map[string]bool) []string {
+func ls(FileName string, TheMap map[string]bool, isrot bool) []string {
 	result := []string{}
 	s := strings.Split(FileName, "/")
 
@@ -48,22 +51,23 @@ func ls(FileName string, TheMap map[string]bool) []string {
 		}
 	} else {
 		if s[0] == "" {
-			FileName = "." + FileName
+			// FileName = "." + FileName
 		}
 		if len(s) == 1 {
-			FileName = "./" + FileName
+			// FileName = "./" + FileName
 		}
 	}
 
 	fileInfos, err := os.Stat(FileName)
 	if err != nil {
-		fmt.Println("The file name is :", FileName)
-		fmt.Println("error in the os.Stat function :", err)
+		fmt.Printf("ls: cannot access '%s': No such file or directory", FileName)
+		return nil
 	}
 
 	if fileInfos.IsDir() {
 		if TheMap["ls"] {
 			result = functions.LS(FileName, TheMap)
+			
 		}
 		// fmt.Println(functions.Queue)
 		if TheMap["t"] {
@@ -87,9 +91,14 @@ func ls(FileName string, TheMap map[string]bool) []string {
 			// fmt.Println(result)
 		}
 		if TheMap["l"] {
-			for _, x := range result {
+			for r, x := range result {
 				// fmt.Println(x)
-				functions.L(x, TheMap, result[0]) // it always returns the files that start with a dot even if the a flag is false
+				if r != 0 && !TheMap["a"] {
+					functions.L(x, TheMap, result[0])
+				} else if TheMap["a"] {
+					functions.L(x, TheMap, result[0])
+				}
+				// it always returns the files that start with a dot even if the a flag is false
 			}
 		}
 	} else {
@@ -114,7 +123,7 @@ func ls(FileName string, TheMap map[string]bool) []string {
 }
 
 // it still does not work with .. directory
-func Recursion(FileName string, TheMap map[string]bool) {
+func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
 	if FileName == "." || FileName == ".." {
 		return
 	}
@@ -128,17 +137,20 @@ func Recursion(FileName string, TheMap map[string]bool) {
 	} else {
 		fmt.Println("")
 		fmt.Println(FileName, " : ")
-		rec := ls(FileName, TheMap)
+		rec := ls(FileName, TheMap, isrot)
 		for r, x := range rec {
-			// full := FileName + "/" + x
+			if x=="" {
+				continue
+			}
 			Infos, err := os.Stat(x)
 			if err != nil {
-				fmt.Println("here is the error : ", err, FileName)
+				fmt.Println("here is the error : ", err, x)
 				return
 			}
-			if Infos.IsDir() && Infos.Name() == FileName && r != 0 {
-				Recursion(x, TheMap)
+			if Infos.IsDir() && Infos.Name()==x&& r != 0 {
+				Recursion(x, TheMap, isrot)
 			}
+
 		}
 	}
 }
