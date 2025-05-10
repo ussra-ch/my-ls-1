@@ -86,3 +86,33 @@ Iteration: Repeat the process until the queue is empty.
 
 Things we should handle:
 - Total sum in ls and -l
+
+
+
+
+
+
+
+
+/*
+tests :
+go run . ls functions/ 
+functions    functions    12    a.go    func.go    l.go    ls.go    r.go    t.go */
+/*
+ls go.mod
+go.mod
+*/
+
+/*
+go run . ls -l go.mod
+*/
+
+
+go run . ls -a
+.    .    .git    functions    go.mod    guide    main.go 
+
+/*
+-R
+*/
+
+go run . ls -la
