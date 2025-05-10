@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
+
 	// "strings"
 
 	functions "myls1/functions"
@@ -22,12 +24,12 @@ func main() {
 		if TheMap["R"] {
 			for _, y := range result {
 				// full := x + "/" + y
-				// fmt.Println(y)
+
 				info, err := os.Stat(y)
 				if err != nil {
 					fmt.Println("error in the main")
 				}
-				if info.IsDir() {
+				if y != "" && info.IsDir() {
 					Recursion(y, TheMap) // recurse with full path
 				}
 			}
@@ -37,10 +39,21 @@ func main() {
 
 func ls(FileName string, TheMap map[string]bool) []string {
 	result := []string{}
-	// s := strings.Split(FileName, "/")
-	// if s[0] == "" {
-	// 	FileName = "." + FileName
-	// }
+	s := strings.Split(FileName, "/")
+
+	if FileName == "." || FileName == "/" {
+		if FileName == "." {
+		} else {
+			FileName = ".."
+		}
+	} else {
+		if s[0] == "" {
+			FileName = "." + FileName
+		}
+		if len(s) == 1 {
+			FileName = "./" + FileName
+		}
+	}
 
 	fileInfos, err := os.Stat(FileName)
 	if err != nil {
@@ -52,6 +65,7 @@ func ls(FileName string, TheMap map[string]bool) []string {
 		if TheMap["ls"] {
 			result = functions.LS(FileName, TheMap)
 		}
+		// fmt.Println(functions.Queue)
 		if TheMap["t"] {
 			// fmt.Println(result)
 			us := []string{}
@@ -78,12 +92,19 @@ func ls(FileName string, TheMap map[string]bool) []string {
 				functions.L(x, TheMap, result[0]) // it always returns the files that start with a dot even if the a flag is false
 			}
 		}
+	} else {
+		if TheMap["l"] {
+			// fmt.Println(x)
+			functions.L(FileName, TheMap, "") // it always returns the files that start with a dot even if the a flag is false
+		} else {
+			fmt.Print(fileInfos.Name())
+		}
 	}
 	if !TheMap["l"] {
 		for _, x := range result {
-			if !TheMap["a"] && x[0] == '.' {
+			if len(x) != 0 && !TheMap["a"] && x[0] == '.' {
 				continue
-			} else {
+			} else if len(x) != 0 {
 				fmt.Print(functions.CleanPath(x), "    ")
 			}
 		}
@@ -108,14 +129,14 @@ func Recursion(FileName string, TheMap map[string]bool) {
 		fmt.Println("")
 		fmt.Println(FileName, " : ")
 		rec := ls(FileName, TheMap)
-		for _, x := range rec {
+		for r, x := range rec {
 			// full := FileName + "/" + x
 			Infos, err := os.Stat(x)
 			if err != nil {
 				fmt.Println("here is the error : ", err, FileName)
 				return
 			}
-			if Infos.IsDir() {
+			if Infos.IsDir() && Infos.Name() == FileName && r != 0 {
 				Recursion(x, TheMap)
 			}
 		}
