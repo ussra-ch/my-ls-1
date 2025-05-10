@@ -14,14 +14,14 @@ import (
 func L(FileName string, TheMap map[string]bool, root string) {
 	// fmt.Println(FileName)
 
-	s := strings.Split(FileName, "/")
-	// fmt.Println(len(s))
-	temp := []string{}
-	for i := 0; i < len(s); i++ {
-		if s[i] != "" {
-			temp = append(temp, s[i])
-		}
-	}
+	// s := strings.Split(FileName, "/")
+	// // fmt.Println(len(s))
+	// temp := []string{}
+	// for i := 0; i < len(s); i++ {
+	// 	if s[i] != "" {
+	// 		temp = append(temp, s[i])
+	// 	}
+	// }
 	// fmt.Println(len(temp))
 	/*if len(s) == 1 || s[0] == "" {
 		FileName = "./" + FileName
@@ -102,14 +102,9 @@ func L(FileName string, TheMap map[string]bool, root string) {
 	// fmt.Println("Leeeenght is :", len(s))
 	// fmt.Println( FileName)
 	// fmt.Println("slice content is :", s)
-	if s[len(s)-1] == FileName {
-		fmt.Println("..")
-	} else if s[0] == "." && TheMap["a"] {
-	
-		fmt.Println(".")
-	} else if FileName != FileInfo.Name(){
-		fmt.Println(FileInfo.Name())
-	}
+	// e
+	fmt.Println(FileInfo.Name())
+
 	// if FileInfo.Name()==temp[1]{
 	// 	fmt.Println(".")
 	// }else{

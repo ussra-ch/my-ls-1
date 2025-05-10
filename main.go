@@ -3,60 +3,53 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
-
 	// "strings"
 
 	functions "myls1/functions"
-	// "strings"
 )
 
-var isrot bool
+// var isrot bool
 
 // mzl lina dik total li katkoun m3a ls -l
 func main() {
 	args := os.Args
 	TheMap, files := functions.ArgumentChecking(args)
-	// RecursionResult := [][]string{}
-	// ReverseResult := []string{}
-	// TimeResult := []string{}
 
 	for _, x := range files {
-
-		result := ls(x, TheMap, isrot)
+		result := ls(x, TheMap)
 		if TheMap["R"] {
 			for _, y := range result {
-
-				// full := x + "/" + y
-
 				info, err := os.Stat(y)
 				if err != nil {
 				}
-				if y != "" && info.IsDir() {
-					Recursion(y, TheMap, isrot) // recurse with full path
+				if info.IsDir() {
+					Recursion(y, TheMap) // recurse with full path
 				}
 			}
 		}
 	}
 }
 
-func ls(FileName string, TheMap map[string]bool, isrot bool) []string {
+func ls(FileName string, TheMap map[string]bool) []string {
 	result := []string{}
-	s := strings.Split(FileName, "/")
-
-	if FileName == "." || FileName == "/" {
-		if FileName == "." {
-		} else {
-			FileName = ".."
-		}
-	} else {
-		if s[0] == "" {
-			// FileName = "." + FileName
-		}
-		if len(s) == 1 {
-			// FileName = "./" + FileName
-		}
+	if TheMap["R"]{
+		fmt.Print(FileName)
+		fmt.Println(":")
 	}
+	// s := strings.Split(FileName, "/")
+
+	// if FileName == "." || FileName == "/" {
+	// 	if FileName != "." {
+	// 		FileName = ".."
+	// 	}
+	// } else {
+	// 	if s[0] == "" {
+	// 		// FileName = "." + FileName
+	// 	}
+	// 	if len(s) == 1 {
+	// 		// FileName = "./" + FileName
+	// 	}
+	// }
 
 	fileInfos, err := os.Stat(FileName)
 	if err != nil {
@@ -68,41 +61,46 @@ func ls(FileName string, TheMap map[string]bool, isrot bool) []string {
 		if TheMap["ls"] {
 			result = functions.LS(FileName, TheMap)
 		}
-		// fmt.Println(functions.Queue)
 		if TheMap["t"] {
-			// fmt.Println(result)
 			us := []string{}
 			temp := functions.T(FileName, []string{}, TheMap)
 			for _, x := range temp {
-				// fmt.Println(x)
 				us = append(us, x.NameTemp)
 			}
 			result = us
-			// fmt.Println(result)
-			// fmt.Println(result)
 		}
 		if TheMap["r"] {
 			us := []string{}
-			// fmt.Println(result)
 			us = functions.Reverse("", result, TheMap)
 			result = us
-
-			// fmt.Println(result)
 		}
 		if TheMap["l"] {
-			for r, x := range result {
-				// fmt.Println(x)
-				if r != 0 && !TheMap["a"] {
-					functions.L(x, TheMap, result[0])
-				} else if TheMap["a"] {
-					functions.L(x, TheMap, result[0])
+			total := int64(0)
+			block := int64(512)
+			for _, x := range result{
+				fileInfos, err := os.Stat(x)
+				if err != nil{
+					continue
 				}
-				// it always returns the files that start with a dot even if the a flag is false
+				if fileInfos.IsDir(){
+					continue
+				}
+				temp := (fileInfos.Size() + block-1)/block
+				total += temp
+			}
+			fmt.Println("total", total)
+			for _, x := range result {
+				functions.L(x, TheMap, result[0])
+				// if !TheMap["a"] {
+
+				// 	functions.L(x, TheMap, result[0])
+				// } else if TheMap["a"] {
+				// 	functions.L(x, TheMap, result[0])
+				// }
 			}
 		}
 	} else {
 		if TheMap["l"] {
-			// fmt.Println(x)
 			functions.L(FileName, TheMap, "") // it always returns the files that start with a dot even if the a flag is false
 		} else {
 			fmt.Print(fileInfos.Name())
@@ -122,7 +120,7 @@ func ls(FileName string, TheMap map[string]bool, isrot bool) []string {
 }
 
 // it still does not work with .. directory
-func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
+func Recursion(FileName string, TheMap map[string]bool) {
 	if FileName == "." || FileName == ".." {
 		return
 	}
@@ -135,9 +133,9 @@ func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
 		return
 	} else {
 		fmt.Println("")
-		fmt.Println(FileName, " : ")
-		rec := ls(FileName, TheMap, isrot)
-		for r, x := range rec {
+		// fmt.Println(FileName, " : ")
+		rec := ls(FileName, TheMap)
+		for _, x := range rec {
 			if x == "" {
 				continue
 			}
@@ -147,9 +145,8 @@ func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
 				return
 			}
 
-			if Infos.IsDir()&&strings.HasSuffix(FileName,functions.Queue[0]) && r != 0 {
-				fmt.Println("1")
-				Recursion(x, TheMap, isrot)
+			if Infos.IsDir(){
+				Recursion(x, TheMap)
 			}
 
 		}
