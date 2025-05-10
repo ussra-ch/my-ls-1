@@ -38,7 +38,6 @@ func LS(path string, TheMap map[string]bool)  []string{
 		// fmt.Print(fileInfo.Name(), "  ")
 		result = append(result, fileInfo.Name())
 	}
-	// fmt.Println(result)
 
 	return result
 }
