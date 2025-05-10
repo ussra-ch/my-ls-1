@@ -67,7 +67,6 @@ func ls(FileName string, TheMap map[string]bool, isrot bool) []string {
 	if fileInfos.IsDir() {
 		if TheMap["ls"] {
 			result = functions.LS(FileName, TheMap)
-			
 		}
 		// fmt.Println(functions.Queue)
 		if TheMap["t"] {
@@ -139,7 +138,7 @@ func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
 		fmt.Println(FileName, " : ")
 		rec := ls(FileName, TheMap, isrot)
 		for r, x := range rec {
-			if x=="" {
+			if x == "" {
 				continue
 			}
 			Infos, err := os.Stat(x)
@@ -147,7 +146,9 @@ func Recursion(FileName string, TheMap map[string]bool, isrot bool) {
 				fmt.Println("here is the error : ", err, x)
 				return
 			}
-			if Infos.IsDir() && Infos.Name()==x&& r != 0 {
+
+			if Infos.IsDir()&&strings.HasSuffix(FileName,functions.Queue[0]) && r != 0 {
+				fmt.Println("1")
 				Recursion(x, TheMap, isrot)
 			}
 
