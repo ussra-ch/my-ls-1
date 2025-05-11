@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"syscall"
+
 	// "strings"
 
 	functions "myls1/functions"
@@ -32,7 +34,7 @@ func main() {
 
 func ls(FileName string, TheMap map[string]bool) []string {
 	result := []string{}
-	if TheMap["R"]{
+	if TheMap["R"] {
 		fmt.Print(FileName)
 		fmt.Println(":")
 	}
@@ -76,29 +78,24 @@ func ls(FileName string, TheMap map[string]bool) []string {
 		}
 		if TheMap["l"] {
 			total := int64(0)
-			block := int64(512)
-			for _, x := range result{
+		
+			for _, x := range result {
 				fileInfos, err := os.Stat(x)
-				if err != nil{
+				if err != nil {
 					continue
 				}
-				if fileInfos.IsDir(){
-					continue
-				}
-				temp := (fileInfos.Size() + block-1)/block
-				total += temp
+				
+		
+				stat := fileInfos.Sys().(*syscall.Stat_t)
+				total += int64(stat.Blocks)
 			}
-			fmt.Println("total", total)
+		
+			fmt.Println("total", total/2) // ls -l يقسم الكتل على 2 لعرضها بوحدة 1K
 			for _, x := range result {
 				functions.L(x, TheMap, result[0])
-				// if !TheMap["a"] {
-
-				// 	functions.L(x, TheMap, result[0])
-				// } else if TheMap["a"] {
-				// 	functions.L(x, TheMap, result[0])
-				// }
 			}
 		}
+		
 	} else {
 		if TheMap["l"] {
 			functions.L(FileName, TheMap, "") // it always returns the files that start with a dot even if the a flag is false
@@ -145,7 +142,7 @@ func Recursion(FileName string, TheMap map[string]bool) {
 				return
 			}
 
-			if Infos.IsDir(){
+			if Infos.IsDir() {
 				Recursion(x, TheMap)
 			}
 
