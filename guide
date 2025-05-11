@@ -116,3 +116,9 @@ go run . ls -a
 */
 
 go run . ls -la
+
+
+New problems :
+Create directory with - name and run both my-ls and the system command ls with the arguments: "-"
+
+Create file and link for this file and run both my-ls-1 and the system command ls with the arguments: "-l <symlink file>"

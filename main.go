@@ -10,7 +10,7 @@ import (
 	functions "myls1/functions"
 )
 
-// var isrot bool
+var isFullpath bool
 
 // mzl lina dik total li katkoun m3a ls -l
 func main() {
@@ -84,13 +84,11 @@ func ls(FileName string, TheMap map[string]bool) []string {
 				if err != nil {
 					continue
 				}
-				
-		
 				stat := fileInfos.Sys().(*syscall.Stat_t)
 				total += int64(stat.Blocks)
 			}
 		
-			fmt.Println("total", total/2) // ls -l يقسم الكتل على 2 لعرضها بوحدة 1K
+			fmt.Println("total", total/2)
 			for _, x := range result {
 				functions.L(x, TheMap, result[0])
 			}

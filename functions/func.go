@@ -75,5 +75,6 @@ func ArgumentChecking(args []string) (map[string]bool, []string) {
 	if len(files) == 0 {
 		files = append(files, ".")
 	}
+	
 	return TheMap, files
 }

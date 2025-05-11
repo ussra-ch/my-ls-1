@@ -23,6 +23,7 @@ func LS(path string, TheMap map[string]bool)  []string{
 			return nil
 		}
 		if TheMap["a"]{
+			// if len(file)
 			result = append(result, ".", "..")
 		}
 		for _, x := range content {
