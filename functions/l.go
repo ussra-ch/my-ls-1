@@ -55,19 +55,19 @@ func L(FileName string, TheMap map[string]bool, root string) {
 	}
 	// fmt.Println(FileName)
 	
-	fmt.Print(FileInfo.Mode(), "  ")
-	fmt.Print(test.Nlink, " ")
+	fmt.Printf("%-10s ", FileInfo.Mode())
+	fmt.Printf("%3d ", test.Nlink)
 	userName, err2 := user.LookupId(strconv.Itoa(int(test.Uid)))
 	if err2 != nil {
 		fmt.Println("Error in LookupId, go check it")
 	}
-	fmt.Print(userName.Username, " ")
+	fmt.Printf("%-8s ", userName.Username)
 	groupName, err2 := user.LookupGroupId(strconv.Itoa(int(test.Gid)))
 	if err2 != nil {
 		fmt.Println("Error in LookupId, go check it")
 	}
-	fmt.Printf("%s ", groupName.Name)
-	fmt.Printf("%d ", test.Size)
+	fmt.Printf("%-8s ", groupName.Name)
+	fmt.Printf("%4d ", test.Size)
 	time := FileInfo.ModTime()
 	fmt.Print(time.Format("Jan 02 15:04"), " ")
 	// fmt.Println(FileInfo.Name()) // January 2nd, 2006 at 3:04:05 PM (MST) — is Go’s reference time.
