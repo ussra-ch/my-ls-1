@@ -1,6 +1,6 @@
-there are some linux function's that can help : opendir, readdir, printf, and closedir.
- ls [flags] [directory] or  ls [directory]/[file] flag
+errors :
 
+<<<<<<< HEAD
 
 
 
@@ -122,3 +122,8 @@ New problems :
 Create directory with - name and run both my-ls and the system command ls with the arguments: "-"
 
 Create file and link for this file and run both my-ls-1 and the system command ls with the arguments: "-l <symlink file>"
+=======
+    + ls -l should give the year instead of time sometimes, like in ls -l /usr/bin
+    + Total of ls -l is wrong
+    + some informations of . and .. are wrong (talking about ls -l)
+>>>>>>> 32dbb8190b02c1164c6012df118e3bb87d385200
