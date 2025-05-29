@@ -11,7 +11,6 @@ import (
 // done returning slice
 func LS(path string, TheMap map[string]bool)  []string{
 	result := []string{}
-	// result = append(result, path, GetRoot(path))
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		fmt.Println("error in the os.Stat function :", err)
@@ -23,7 +22,6 @@ func LS(path string, TheMap map[string]bool)  []string{
 			return nil
 		}
 		if TheMap["a"]{
-			// if len(file)
 			result = append(result, ".", "..")
 		}
 		for _, x := range content {
@@ -38,8 +36,6 @@ func LS(path string, TheMap map[string]bool)  []string{
 			result = append(result, fullPath)
 		}
 	} else {
-		// fmt.Print(fileInfo.Name(), "  ")
-		// fmt.Println(fileInfo.Name())
 		result = append(result, fileInfo.Name())
 	}
 

@@ -22,15 +22,12 @@ func (t *Temp) ConvertToUnix() int64 {
 }
 
 func T(path string, input[]string, TheMap map[string]bool)[]Temp {
-	// res := []string{}
-	// fmt.Println(input)
 	result := []Temp{}
 	if path != ""{
 		fileInfo, err := os.Stat(path)
 		if err != nil {
 			fmt.Println("error in the os.Stat function :", err)
 		}
-		// fmt.Println(path)
 		if fileInfo.IsDir() {
 			content, err1 := os.ReadDir(path)
 			if err1 != nil {
@@ -47,22 +44,18 @@ func T(path string, input[]string, TheMap map[string]bool)[]Temp {
 					fmt.Println("Error in t function, inside the loop. Go check it :) ")
 				}
 				Queue = append(Queue, fullPath)
-				// fmt.Print(temp, " ")
 				provi.NameTemp = fullPath
 				provi.TimeStamp = FileInfos.ModTime()
 				result = append(result, provi)
 			}
 		} else {
-			// fmt.Print(fileInfo.Name(), " ")
 			provi := Temp{}
 			provi.NameTemp = path
 			provi.TimeStamp = fileInfo.ModTime()
-			// res = append(res, fileInfo.Name())
 			result = append(result, provi)
 		}
 	}else{
 		provi := Temp{}
-		// result := []Temp{}
 		for _, x := range input{
 			FileInfos, err := os.Stat(x)
 			if err != nil {
@@ -96,9 +89,7 @@ func T(path string, input[]string, TheMap map[string]bool)[]Temp {
 	newResult := []Temp{}
 
 	for _, x := range result {
-		// fmt.Println(x.timeStamp.(time.Time).Unix()
 		newResult = append(newResult, Temp{x.NameTemp, x.ConvertToUnix()})
-		// fmt.Println(newResult)
 	}
 
 	for i := 0; i < len(newResult)-1; i++ {

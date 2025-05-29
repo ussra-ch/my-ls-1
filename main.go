@@ -38,21 +38,6 @@ func ls(FileName string, TheMap map[string]bool) []string {
 		fmt.Print(FileName)
 		fmt.Println(":")
 	}
-	// s := strings.Split(FileName, "/")
-
-	// if FileName == "." || FileName == "/" {
-	// 	if FileName != "." {
-	// 		FileName = ".."
-	// 	}
-	// } else {
-	// 	if s[0] == "" {
-	// 		// FileName = "." + FileName
-	// 	}
-	// 	if len(s) == 1 {
-	// 		// FileName = "./" + FileName
-	// 	}
-	// }
-
 	fileInfos, err := os.Stat(FileName)
 	if err != nil {
 		fmt.Printf("ls: cannot access '%s': No such file or directory", FileName)
